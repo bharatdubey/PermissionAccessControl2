@@ -2,8 +2,7 @@
 // Licensed under MIT license. See License.txt in the project root for license information.
 
 using System.Reflection;
-using CommonCache;
-using DataAuthorize;
+using DataKeyParts;
 using DataLayer.EfCode;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Internal;
@@ -14,7 +13,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PermissionAccessControl2.Data;
-using ServiceLayer.CodeCalledInStartup;
+using RefreshClaimsParts;
 using Test.FakesAndMocks;
 using TestSupport.Helpers;
 
