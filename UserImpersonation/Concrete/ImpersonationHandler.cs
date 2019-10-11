@@ -12,9 +12,9 @@ using Microsoft.AspNetCore.Http;
 
 [assembly: InternalsVisibleTo("Test")]
 
-namespace ServiceLayer.UserImpersonation.Concrete.Internal
+namespace UserImpersonation.Concrete
 {
-    internal class ImpersonationHandler
+    public class ImpersonationHandler
     {
         public const string ImpersonationClaimType = "Impersonalising";
 

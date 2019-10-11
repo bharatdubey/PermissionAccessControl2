@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Http;
 
 [assembly: InternalsVisibleTo("Test")]
 
-namespace ServiceLayer.UserImpersonation.Concrete.Internal
+namespace UserImpersonation.Concrete
 {
-    internal class ImpersonationCookie
+    public class ImpersonationCookie
     {
         private const string CookieName = "UserImpersonation";
 

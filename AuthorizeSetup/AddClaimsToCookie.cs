@@ -2,14 +2,14 @@
 // Licensed under MIT license. See License.txt in the project root for license information.
 
 using System;
-using CommonCache;
 using DataKeyParts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using ServiceLayer.UserImpersonation.Concrete.Internal;
+using RefreshClaimsParts;
+using UserImpersonation.Concrete;
 
-namespace ServiceLayer.AuthorizeSetup
+namespace AuthorizeSetup
 {
     public static class AddClaimsToCookie
     {
@@ -29,10 +29,15 @@ namespace ServiceLayer.AuthorizeSetup
                 case AuthCookieVersions.Off:
                     //This turns the permissions/datakey totally off - you are only using ASP.NET Core logged-in user 
                     break;
-                case AuthCookieVersions.None:
+                case AuthCookieVersions.LoginPermissions:
                     //This uses UserClaimsPrincipal to set the claims on login - easy and quick.
                     //Simple version - see https://korzh.com/blogs/net-tricks/aspnet-identity-store-user-data-in-claims
                     services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, AddPermissionsToUserClaims>();
+                    break;
+                case AuthCookieVersions.LoginPermissionsDataKey:
+                    //This uses UserClaimsPrincipal to set the claims on login - easy and quick.
+                    //Simple version - see https://korzh.com/blogs/net-tricks/aspnet-identity-store-user-data-in-claims
+                    services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, AddPermissionsDataKeyToUserClaims>();
                     break;
                 case AuthCookieVersions.PermissionsOnly:
                     //Event - only permissions set up
@@ -74,11 +79,12 @@ namespace ServiceLayer.AuthorizeSetup
 
             if (authCookieVersion == AuthCookieVersions.RefreshClaims || authCookieVersion == AuthCookieVersions.Everything)
             {
-                services.AddSingleton<IAuthChanges, AuthChanges>();
+                //IAuthChanges is used to detect changes in the ExtraAuthClasses so we can update the user's permission claims
+                services.AddSingleton<IAuthChanges, AuthChanges>(); 
             }
             else
             {
-                services.AddSingleton<IAuthChanges>(x => null); //This will turn off the checks in the ExtraAuthDbContext
+                services.AddSingleton<IAuthChanges>(x => null); //This will turn off the change checks in the ExtraAuthDbContext
             }
         }
     }
